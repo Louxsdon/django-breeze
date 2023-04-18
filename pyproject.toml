@@ -19,7 +19,7 @@ inertia-django = "^0.5.2"
 mypy = "^1.2.0"
 
 [tool.poetry.scripts]
-django-breeze = 'django_breeze.scripts.django-breeze:run'
+django-breeze = 'django_breeze.scripts.django_breeze:run'
 
 [build-system]
 requires = ["poetry-core"]

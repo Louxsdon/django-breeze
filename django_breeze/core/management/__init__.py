@@ -12,33 +12,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 class Manager:
-    def __init__(self) -> None:
-        # project_name = os.environ.get('DJANGO_SETTINGS_MODULE')
-        # project_name = getattr(settings, 'ROOT_URLCONF')
-        # DJANGO_BASE_DIR = settings.BASE_DIR
-        # import re
-        # project_name = re.sub(r'\.urls$', '', settings.ROOT_URLCONF)
-        settings_dir = os.path.dirname(os.path.abspath(__file__))
-        project_name = os.path.basename(settings_dir)
-        print(project_name)
-
     def args_parser(self):
         parser_des = """\
         Copy React or TypeScript files from templates 
         folder to current working directory.
         """
         parser = argparse.ArgumentParser(description=parser_des)
-        parser.add_argument("project_name", type=str, help="Name of the django project")
         parser.add_argument(
-            "framework", choices=["react", "vue"], help="The framework to use"
+            "library", choices=["react", "vue3"], help="The Liberary to use"
         )
         parser.add_argument(
             "--typescript", action="store_true", help="Include if using TypeScript"
-        )
-        parser.add_argument(
-            "--fresh",
-            action="store_true",
-            help="If the existing destination directory should be overide.",
         )
         parser.add_argument(
             "--verbose",
@@ -55,41 +39,27 @@ class Manager:
 
         self.PROJECT_BASE_DIR = os.getcwd()
 
-        # check django project name and existence settings
-        self.PROJECT_DIR = Path(args.project_name)
-        self.PROJECT_DIR = Path(args.project_name)
-        self.PROJECT_DIR = Path(args.project_name)
-
-        print((self.PROJECT_BASE_DIR))
-        print((self.PROJECT_DIR))
-        # copy neccessary project files
         self.copy_files()
-        # self.configs()
 
     def copy_files(self):
-        # install packages
-        # self.install_packages()
-
         TEMPLATE_DIR = BASE_DIR / "templates"
         DESTINATION_DIR = os.getcwd()
 
         if self.args.framework == "react":
             src_dir = TEMPLATE_DIR / "react"
-        elif self.args.framework == "vue":
-            src_dir = TEMPLATE_DIR / "vue"
+        elif self.args.framework == "vue3":
+            src_dir = TEMPLATE_DIR / "vue3"
         else:
-            print("You must provide framework to use! suported frameworks [react, vue]")
+            print(
+                "You must provide framework to use! suported frameworks [react, vue3]"
+            )
 
         if self.args.typescript:
             src_dir += "_typescript"
 
-        # if not os.path.exists(DESTINATION_DIR):
-        #     os.makedirs(DESTINATION_DIR)
         shutil.copytree(src_dir, DESTINATION_DIR, dirs_exist_ok=True)
         if self.args.verbose:
-            self._verbose(
-                f"Files created successfully. Source Directory is: {DESTINATION_DIR}\n"
-            )
+            self._verbose(f"Project files generated successfully!\n")
 
     def configs(self):
         # Modify settings variables
@@ -141,18 +111,6 @@ class Manager:
         else:
             print("Could not find settings file in base directory.")
 
-    def install_packages(
-        self,
-    ):
-        """Install required Pypi packages for this project"""
-        # Install pip packages
-        packages = ["django-vite", "django-inertia"]
-        print("\nInstalling required packages please wait...")
-        for package in packages:
-            subprocess.run(["pip", "install", package], stdout=subprocess.PIPE)
-            self._verbose(f"Installed package {package}")
-        print("Packages installed successfully!\n")
-
     def _verbose(self, message: str):
         """Display brief message of a process(es)
 
@@ -165,5 +123,5 @@ class Manager:
 
 def execute_command(argv=None):
     """Run a ManagementUtility."""
-    utility = Manager(argv)
+    utility = Manager()
     utility.execute()
