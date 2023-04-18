@@ -1,7 +1,6 @@
 from django.conf import settings as django_settings
 from inertia.settings import settings as inertia_settings
 from pathlib import Path
-import django
 
 
 def initialize() -> None:
@@ -11,11 +10,6 @@ def initialize() -> None:
     MIDDLEWARES = [
         "inertia.middleware.InertiaMiddleware",
         # "django-breeze.django_breeze.middleware.inertia_share",
-    ]
-
-    INSTALLED_APPS = [
-        "inertia",
-        "django_vite",
     ]
 
     # Django Breeze Default Settings
@@ -82,11 +76,5 @@ def initialize() -> None:
 
     django_settings.TEMPLATES[0]["DIRS"].append(Path(BASE_DIR) / "src/")
 
-    for app in INSTALLED_APPS:
-        django_settings.INSTALLED_APPS.append(app)
-
     for middleware in MIDDLEWARES:
         django_settings.MIDDLEWARE.append(middleware)
-    # django_settings.STATICFILES_DIRS.append(settings.DJANGO_VITE_ASSETS_PATH)
-
-    django.setup()
