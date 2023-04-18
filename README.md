@@ -2,8 +2,6 @@
 
 ## Introduction
 
-<hr>
-
 Django Breeze provides a minimal and simple starting point for building a Django application with `Inertia` and `Vite` with minimal or no configuration. Styled with Tailwind CSS.
 
 Inertia helps build single-page apps, without building an API. Create modern single-page React, Vue, and Svelte apps using classic server-side routing. Works with any backend. Documentation for Inertia can be found on the [Intertia website](https://inertiajs.com/).
@@ -83,6 +81,35 @@ python manage.py runserver
 ```
 
 Now you're all set!
+
+## Configurations
+
+Although, djang breeze comes with minimal or no configurations but here are some of the default settings it comes with out of the box.
+
+### Django Settings
+
+```python
+# settings.py
+
+ DJANGO_BREEZE = {
+        "INERTIA": {
+            "LAYOUT": "index.html",
+            "SSR_URL": "http://localhost:13714",
+            "SSR_ENABLED": False,
+        },
+        "DJANGO_VITE": {
+            "DEV_MODE": True,
+            "SERVER_PROTOCOL": "http",
+            "DEV_SERVER_HOST": "localhost",
+            "DEV_SERVER_PORT": 5173,
+            "WS_CLIENT_URL": "@vite/client",
+            "ASSETS_PATH": "static/dist",
+            "STATIC_URL_PREFIX": "",
+        }
+```
+
+Settings for [Inertia Django](https://github.com/inertiajs/inertia-django) is under `INERTIA` and [Django Vite](https://github.com/MrBin99/django-vite) is `DJANGO_VITE`. You can find more explaination of the settings on their repos
+`Note:` All settings are joined with underscore to match how their developers defined them e.g inertia settings is `INERTIA_LAYOUT` and django vite is `DJANGO_VITE_DEV_MODE` which has been done automatically by django breeze so you just use the `DJANGO_BREEZE` settings format in your `settings.py` file.
 
 ## Thank you
 
