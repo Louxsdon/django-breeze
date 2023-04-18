@@ -90,6 +90,10 @@ python manage.py runserver
 
 Now you're all set!
 
+## Usage
+
+For usage, refer to [inertia-django](https://github.com/inertiajs/inertia-django#usage) for in-depth guidlines.
+
 ## Configurations
 
 Although, djang breeze comes with minimal or no configurations but here are some of the default settings it comes with out of the box.
