@@ -1,10 +1,12 @@
 [tool.poetry]
 name = "django-breeze"
-version = "0.1.0"
-description = ""
+version = "0.1.1"
+description = "Django Breeze provides a minimal and simple starting point for building a Django application with Inertia.js Styled with Tailwind CSS."
+keywords = ["react", "django", "vue", "inertia", "vite"]
 authors = ["louxsdon <louisayivi.dev@gmail.com>"]
 license = "MIT"
 readme = "README.md"
+repository = "https://github.com/Louxsdon/django-breeze"
 packages = [{include = "django_breeze"}]
 
 [tool.poetry.dependencies]
@@ -12,6 +14,12 @@ python = "^3.10"
 django-vite = "^2.0.2"
 inertia-django = "^0.5.2"
 
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.2.0"
+
+[tool.poetry.scripts]
+django-breeze = 'django_breeze.scripts.django-breeze:main'
 
 [build-system]
 requires = ["poetry-core"]

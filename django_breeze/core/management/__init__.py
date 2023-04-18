@@ -50,7 +50,7 @@ class Manager:
         self.args = parser.parse_args()
         return self.args
 
-    def execute_command(self):
+    def execute(self):
         args = self.args_parser()
 
         self.PROJECT_BASE_DIR = os.getcwd()
@@ -85,17 +85,11 @@ class Manager:
 
         # if not os.path.exists(DESTINATION_DIR):
         #     os.makedirs(DESTINATION_DIR)
-        try:
-            shutil.copytree(src_dir, DESTINATION_DIR, dirs_exist_ok=self.args.fresh)
-            if self.args.verbose:
-                self._verbose(
-                    f"Files created successfully. Source Directory is: {DESTINATION_DIR}\n"
-                )
-        except FileExistsError as e:
-            print(
-                f"Directory '{DESTINATION_DIR}' already exist! Use --fresh to overide the existing folder"
+        shutil.copytree(src_dir, DESTINATION_DIR, dirs_exist_ok=True)
+        if self.args.verbose:
+            self._verbose(
+                f"Files created successfully. Source Directory is: {DESTINATION_DIR}\n"
             )
-            return
 
     def configs(self):
         # Modify settings variables
@@ -167,3 +161,9 @@ class Manager:
         """
         if self.args.verbose:
             print(message)
+
+
+def execute_command(argv=None):
+    """Run a ManagementUtility."""
+    utility = Manager(argv)
+    utility.execute()
