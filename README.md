@@ -1,12 +1,12 @@
-# DJANGO BREEZE
+# Django Breeze
 
 ## Introduction
 
 <hr>
 
-Django Breeze provides a minimal and simple starting point for building a Django application with `Vite` and . Styled with Tailwind, Breeze publishes authentication controllers and views to your application that can be easily customized based on your own application's needs.
+Django Breeze provides a minimal and simple starting point for building a Django application with `Inertia` and `Vite` with minimal or no configuration. Styled with Tailwind CSS.
 
-Django Breeze is powered by Vite and Tailwind.
+Inertia helps build single-page apps, without building an API. Create modern single-page React, Vue, and Svelte apps using classic server-side routing. Works with any backend. Documentation for Inertia can be found on the [Intertia website](https://inertiajs.com/).
 
 ## Installation
 
@@ -16,17 +16,19 @@ Install the following python package via pip
 pip install django-breeze
 ```
 
-Add the django_breeze app to your `INSTALLED_APPS` in `settings.py`
+Add the following apps to your `INSTALLED_APPS` in `settings.py`
 
 ```python
 INSTALLED_APPS = [
   # installed apps,
   'django_breeze',
-  #........
+  'django_vite',
+  'inertia',
+  #...............
 ]
 ```
 
-Add the Inertia middleware to your `MIDDLEWARE` in `settings.py`
+<!-- Add the Inertia middleware to your `MIDDLEWARE` in `settings.py`
 
 ```python
 MIDDLEWARE = [
@@ -34,53 +36,57 @@ MIDDLEWARE = [
   'django_breeze.middleware.InertiaMiddleware',
   # your project's middleware,
 ]
-```
+``` -->
 
 ## Generate Project Files
+
+Generate your frontend project files with django-breeze
 
 ### React
 
 ```bash
-python3 -m django_breeze react
+django-breeze react
 ```
 
 ### Vue 3
 
 ```bash
-python3 -m django_breeze vue
+django-breeze vue3
 ```
 
 ## Install node packages
 
-To install node packages for the frontend
+Run this command to install packages for the frontend.
 
 ```zsh
 npm install
-```
 
-### OR use yarn
+# or
 
-```bash
 yarn
 ```
 
 ## Start Servers
 
-Run the following to start your development servers
+Run the following commands to start your development servers.
 
-```bash
-python manage.py runserver
-```
+### Vite server
 
 ```bash
 npm run dev
 ```
 
+### Django server
+
+```bash
+python manage.py runserver
+```
+
 Now you're all set!
 
-## Official Inertia Documentation
+## Thank you
 
-Documentation for Inertia can be found on the [Intertia website](https://inertiajs.com/).
+A very big thanks to [Inertia.js Team](https://github.com/inertiajs) for [Inertia Django Adaptor](https://github.com/inertiajs/inertia-django), and [MrBin99](https://github.com/MrBin99) for [Django Vite](https://github.com/MrBin99/django-vite).
 
 ## License
 
