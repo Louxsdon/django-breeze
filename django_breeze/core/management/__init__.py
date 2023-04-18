@@ -45,14 +45,12 @@ class Manager:
         TEMPLATE_DIR = BASE_DIR / "templates"
         DESTINATION_DIR = os.getcwd()
 
-        if self.args.framework == "react":
+        if self.args.library == "react":
             src_dir = TEMPLATE_DIR / "react"
-        elif self.args.framework == "vue3":
+        elif self.args.library == "vue3":
             src_dir = TEMPLATE_DIR / "vue3"
         else:
-            print(
-                "You must provide framework to use! suported frameworks [react, vue3]"
-            )
+            print("You must provide library to use! suported libraries [react, vue3]")
 
         if self.args.typescript:
             src_dir += "_typescript"
