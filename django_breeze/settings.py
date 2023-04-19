@@ -36,7 +36,7 @@ def initialize() -> None:
         "CSRF_COOKIE_NAME": "XSRF-TOKEN",
     }
 
-    # Merge DJANGO_BREEZE and user-defined settings
+    # Get user defined django breeze settings
     user_settings = getattr(django_settings, "DJANGO_BREEZE", {})
 
     def merge_dicts(*dicts):
@@ -52,6 +52,7 @@ def initialize() -> None:
                     result[k] = v
         return result
 
+    # Merge DJANGO_BREEZE and user-defined settings
     merged_settings = merge_dicts(DJANGO_BREEZE, user_settings)
 
     def key_exist(key) -> bool:
@@ -75,6 +76,6 @@ def initialize() -> None:
         setattr(django_settings, key, value)
 
     django_settings.TEMPLATES[0]["DIRS"].append(Path(BASE_DIR) / "src/")
-
+    django_settings.STATICFILES_DIRS.append(django_settings.DJANGO_VITE_ASSETS_PATH)
     for middleware in MIDDLEWARES:
         django_settings.MIDDLEWARE.append(middleware)
