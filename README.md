@@ -1,3 +1,5 @@
+![image](./assets/django-breeze-logo.jpg)
+
 # Django Breeze
 
 ## Introduction
