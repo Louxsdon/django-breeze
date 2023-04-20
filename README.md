@@ -1,4 +1,4 @@
-![image](./assets/django-breeze-logo.jpg)
+![image](/django_breeze/static/django_breeze/django-breeze-logo.jpg)
 
 # Django Breeze
 
