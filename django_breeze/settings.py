@@ -14,6 +14,7 @@ def initialize() -> None:
 
     # Django Breeze Default Settings
     DJANGO_BREEZE: dict = {
+        "TEMPLATE_DIR_PATH": Path(BASE_DIR) / "src/",  # path to frontend files
         "INERTIA": {
             "LAYOUT": "index.html",
             "SSR_URL": inertia_settings.INERTIA_SSR_URL,
@@ -75,7 +76,15 @@ def initialize() -> None:
     for key, value in settings.items():
         setattr(django_settings, key, value)
 
-    django_settings.TEMPLATES[0]["DIRS"].append(Path(BASE_DIR) / "src/")
-    django_settings.STATICFILES_DIRS.append(django_settings.DJANGO_VITE_ASSETS_PATH)
+    TEMPLATE_DIR = Path(getattr(django_settings, "TEMPLATE_DIR_PATH"))
+
+    django_settings.TEMPLATES[0]["DIRS"].append(TEMPLATE_DIR)
+    django_settings.STATICFILES_DIRS.extend(
+        [
+            django_settings.DJANGO_VITE_ASSETS_PATH,
+            TEMPLATE_DIR / "assets",
+            TEMPLATE_DIR / "public",
+        ]
+    )
     for middleware in MIDDLEWARES:
         django_settings.MIDDLEWARE.append(middleware)
