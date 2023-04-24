@@ -1,6 +1,7 @@
 from django.conf import settings as django_settings
 from inertia.settings import settings as inertia_settings
 from pathlib import Path
+import inertia
 
 
 def initialize() -> None:
@@ -78,7 +79,10 @@ def initialize() -> None:
 
     TEMPLATE_DIR = Path(getattr(django_settings, "TEMPLATE_DIR_PATH"))
 
-    django_settings.TEMPLATES[0]["DIRS"].append(TEMPLATE_DIR)
+    django_settings.TEMPLATES[0]["DIRS"].extend(
+        [TEMPLATE_DIR, Path(inertia.__file__).resolve().parent / "templates/"]
+    )
+
     django_settings.STATICFILES_DIRS.extend(
         [
             django_settings.DJANGO_VITE_ASSETS_PATH,
