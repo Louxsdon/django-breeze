@@ -1,4 +1,4 @@
-![image](/django_breeze/static/django_breeze/django-breeze-logo.jpg)
+![django-breeze-logo](https://user-images.githubusercontent.com/60859741/233969758-939d1091-f04c-4625-8e2a-23697bca58d8.jpg)
 
 # Django Breeze
 
@@ -88,11 +88,41 @@ npm run dev
 python manage.py runserver
 ```
 
+Now  visit your django host address at e.g http://127.0.0.1:8000/
+
+![django-breeze-success-setup screen](https://user-images.githubusercontent.com/60859741/233971714-3729c1d9-6f9e-4a39-ae38-4d76f14419ef.png)
+
 Now you're all set!
 
 ## Usage
 
-For usage, refer to [inertia-django](https://github.com/inertiajs/inertia-django#usage) for in-depth guidlines.
+### Responses
+
+Render Inertia responses is simple, you can either use the provided inertia render function or, for the most common use case, the inertia decorator. The render function accepts four arguments, the first is your request object. The second is the name of the component you want to render from within your pages directory (without extension). The third argument is a dict of `props` that should be provided to your components. The final argument is `template_data`, for any variables you want to provide to your template, but this is much less common.
+
+```python
+from inertia import render
+from .models import Event
+
+def index(request):
+  return render(request, 'Event/Index', props={
+    'events': Event.objects.all()
+  })
+```
+
+Or use the simpler decorator for the most common use cases
+
+```python
+from inertia import inertia
+from .models import Event
+
+@inertia('Event/Index')
+def index(request):
+  return {
+    'events': Event.objects.all(),
+  }
+```
+For more information on the usage, refer to [inertia-django Docs.](https://github.com/inertiajs/inertia-django#usage)
 
 ## Configurations
 
