@@ -22,8 +22,6 @@ Add the following apps to your `INSTALLED_APPS` in `settings.py`
 INSTALLED_APPS = [
   # installed apps,
   'django_breeze',
-  'django_vite',
-  'inertia',
   #...............
 ]
 ```
@@ -78,13 +76,13 @@ yarn
 
 Run the following commands to start your development servers.
 
-### Vite server
+1. Vite server
 
 ```bash
 npm run dev
 ```
 
-### Django server
+2. Django server
 
 ```bash
 python manage.py runserver
