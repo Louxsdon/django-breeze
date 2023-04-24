@@ -26,45 +26,29 @@ INSTALLED_APPS = [
 ]
 ```
 
-<!-- Add the Inertia middleware to your `MIDDLEWARE` in `settings.py`
-
-```python
-MIDDLEWARE = [
-  # django middleware,
-  'django_breeze.middleware.InertiaMiddleware',
-  # your project's middleware,
-]
-``` -->
-
 ## Generate Project Files
 
-Generate your frontend project files with django-breeze
+Generate your frontend project files with django-breeze, use the `--typescript` option for usage with TypeScript.
 
-### React
+React
 
 ```bash
 django-breeze react
-
-# or with typescript
-
-django-breeze react --typescript
 ```
 
-### Vue 3
+Vue 3
 
 ```bash
 django-breeze vue3
-
-# or with typescript
-
-django-breeze vue3 --typescript
 ```
+
+After generating your frontend project files, you should see `src` directory with other relevant files in the root of your django project.
 
 ## Install node packages
 
 Run this command to install packages for the frontend.
 
-```zsh
+```bash
 npm install
 
 # or
@@ -88,7 +72,7 @@ npm run dev
 python manage.py runserver
 ```
 
-Now  visit your django host address at e.g http://127.0.0.1:8000/
+Now visit your django host address at e.g <http://127.0.0.1:8000/>
 
 ![django-breeze-success-setup screen](https://user-images.githubusercontent.com/60859741/233971714-3729c1d9-6f9e-4a39-ae38-4d76f14419ef.png)
 
@@ -101,6 +85,8 @@ Now you're all set!
 Render Inertia responses is simple, you can either use the provided inertia render function or, for the most common use case, the inertia decorator. The render function accepts four arguments, the first is your request object. The second is the name of the component you want to render from within your pages directory (without extension). The third argument is a dict of `props` that should be provided to your components. The final argument is `template_data`, for any variables you want to provide to your template, but this is much less common.
 
 ```python
+# views.py
+
 from inertia import render
 from .models import Event
 
@@ -113,6 +99,8 @@ def index(request):
 Or use the simpler decorator for the most common use cases
 
 ```python
+# views.py
+
 from inertia import inertia
 from .models import Event
 
@@ -122,16 +110,43 @@ def index(request):
     'events': Event.objects.all(),
   }
 ```
+
 For more information on the usage, refer to [inertia-django Docs.](https://github.com/inertiajs/inertia-django#usage)
 
-## Configurations
+## Production
 
-Although, djang breeze comes with minimal or no configurations but here are some of the default settings it comes with out of the box.
+In production, you must do the following:
+
+1. In the `settings.py`
+
+```python
+DEBUG = FALSE
+```
+
+2. Run below command to build your frontend files
+
+```bash
+npm run build
+# or
+yarn build
+```
+
+3. Run below django command to collect static files.
+
+```bash
+python -m manage.py collectstatic
+```
+
+## Settings
+
+Although, djang breeze comes with minimal or no configuration but here are some of the default settings it comes with out of the box.
 
 ### Django Settings
 
 ```python
 # settings.py
+
+STATIC_ROOT = "static"
 
  DJANGO_BREEZE = {
         "INERTIA": {
@@ -148,6 +163,7 @@ Although, djang breeze comes with minimal or no configurations but here are some
             "ASSETS_PATH": "static/dist", # vite build asset path
             "STATIC_URL_PREFIX": "",
         }
+ }
 ```
 
 Settings for [Inertia Django](https://github.com/inertiajs/inertia-django) is under `INERTIA` and [Django Vite](https://github.com/MrBin99/django-vite) is `DJANGO_VITE`. You can find more explaination of the settings on their repos
@@ -156,8 +172,11 @@ Settings for [Inertia Django](https://github.com/inertiajs/inertia-django) is un
 
 ## Thank you
 
-A very big thanks to [Inertia.js Team](https://github.com/inertiajs) for [Inertia Django Adaptor](https://github.com/inertiajs/inertia-django), and [MrBin99](https://github.com/MrBin99) for [Django Vite](https://github.com/MrBin99/django-vite).
+A very big thanks to the following people for their work done:
+
+- [Inertia.js Team](https://github.com/inertiajs) for Inertia Django Adaptor.
+- [MrBin99](https://github.com/MrBin99) for Django Vite.
 
 ## License
 
-Laravel Breeze is open-sourced software licensed under the [MIT license](LICENSE.md).
+Django Breeze is open-sourced software licensed under the [MIT license](LICENSE.md).
