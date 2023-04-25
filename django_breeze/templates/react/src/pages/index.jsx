@@ -9,9 +9,7 @@ export default function IndexPage(props) {
         alt=""
       />
       <h1 className="text-3xl font-bold">Welcome, Django Breeze</h1>
-      <p className="text-green-600 mb-5">
-        Your project is setup is successfully!
-      </p>
+      <p className="text-green-600 mb-5">Your project is setup successfully!</p>
       <h3 className="text-slate-500">Powered by:</h3>
       <div className="lg:flex space-y-2 lg:space-y-0 lg:space-x-3 mt-3">
         {props.packages.map((framework, i) => (
