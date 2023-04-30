@@ -1,125 +1,99 @@
 import argparse
-import shutil
+import importlib
 import os
-import glob
-import fileinput
-import subprocess
-from pathlib import Path, PurePath
-from django.conf import settings
+import pkgutil
+import sys
+import inspect
 
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+class BaseCommand:
+    help = ""
+    name = None
+    description = None
+    usage = None
 
+    def add_arguments(self, parser):
+        pass
 
-class Manager:
-    def args_parser(self):
-        parser_des = """\
-        Copy React or TypeScript files from templates 
-        folder to current working directory.
-        """
-        parser = argparse.ArgumentParser(description=parser_des)
-        parser.add_argument(
-            "library", choices=["react", "vue3"], help="The Liberary to use"
+    def handle(self, args):
+        pass
+
+    def create_parser(self, subparsers):
+        parser = subparsers.add_parser(
+            name=self.name,
+            description=self.description,
+            usage=self.usage,
         )
-        parser.add_argument(
-            "--typescript", action="store_true", help="Include if using TypeScript"
-        )
-        parser.add_argument(
-            "--verbose",
-            action="store_true",
-            help="Display progress information",
-            default=True,
-        )
+        parser.set_defaults(command=self.name)
+        self.add_arguments(parser)
+        return parser
 
-        self.args = parser.parse_args()
-        return self.args
 
-    def execute(self):
-        args = self.args_parser()
+def find_commands(management_dir=__path__[0]):
+    """
+    Given a path to a management directory, return a list of all the command
+    names that are available.
+    """
+    command_dir = os.path.join(management_dir, "commands")
+    return [
+        name
+        for _, name, is_pkg in pkgutil.iter_modules([command_dir])
+        if not is_pkg and not name.startswith("_")
+    ]
 
-        self.PROJECT_BASE_DIR = os.getcwd()
 
-        self.copy_files()
+class ManagementUtility:
+    def __init__(self, argv=None):
+        self.argv = argv or sys.argv[:]
 
-    def copy_files(self):
-        TEMPLATE_DIR = BASE_DIR / "templates"
-        DESTINATION_DIR = os.getcwd()
-
-        if self.args.library == "react":
-            src_dir = TEMPLATE_DIR / "react"
-        elif self.args.library == "vue3":
-            src_dir = TEMPLATE_DIR / "vue3"
-        else:
-            print("You must provide library to use! suported libraries [react, vue3]")
-
-        if self.args.typescript:
-            src_dir += "_typescript"
-
-        shutil.copytree(src_dir, DESTINATION_DIR, dirs_exist_ok=True)
-        if self.args.verbose:
-            self._verbose(f"Project files generated successfully!\n")
-
-    def configs(self):
-        # Modify settings variables
-        self._verbose("Configuring project settings...")
-        settings.INERTIA_LAYOUT = "index.html"
-        settings.CSRF_HEADER_NAME = "HTTP_X_XSRF_TOKEN"
-        settings.CSRF_COOKIE_NAME = "XSRF-TOKEN"
-
-        if "django_vite" not in settings.INSTALLED_APPS:
-            settings.INSTALLED_APPS += ["inertia", "django_vite"]
-        if "inertia" not in settings.INSTALLED_APPS:
-            settings.INSTALLED_APPS += ["inertia"]
-
-        self._verbose("Settings modified successfully!\n")
-
-    def project_configs(self):
-        settings_files = glob.glob("**/settings.py", recursive=True)
-        if settings_files:
-            settings_file = settings_files[0]
-            print(f"Found settings file: {settings_file}")
-
-            # Add installed apps
-            settings_file.INSTALLED_APPS.append("myAPp")
-
-            # Add variables to settings.py file
-            variables = {
-                "STATIC_URL": "static/",
-                "INERTIA_LAYOUT": "index.html",
-                "CSRF_HEADER_NAME": "HTTP_X_XSRF_TOKEN",
-                "CSRF_COOKIE_NAME": "XSRF-TOKEN",
-                "DJANGO_VITE_ASSETS_PATH": 'BASE_DIR / "static" / "dist"',
-                "DJANGO_VITE_DEV_MODE": "DEBUG",
-            }
-
-            added_variables = {key: False for key in variables}
-            for line in fileinput.input(settings_file, inplace=True):
-                for key, value in variables.items():
-                    if line.startswith(key):
-                        print(f'{key} = "{value}"')
-                        added_variables[key] = True
-                        break
-                else:
-                    print(line.rstrip())
-            # Add variables that were not found in the file
-            for key, value in variables.items():
-                if not added_variables[key]:
-                    with open(settings_file, "a") as f:
-                        f.write(f'\n{key} = "{value}"\n')
-        else:
-            print("Could not find settings file in base directory.")
-
-    def _verbose(self, message: str):
-        """Display brief message of a process(es)
+    def get_command_instance(self, command_name):
+        """Iterates through the subclasses of BaseCommand and creates a list of command classes that have a matching name attribute.
+        If there is at least one match, it creates an instance of the first matching command class and returns it. If there are no matches, it returns None.
 
         Args:
-            message (str): message to display
+            command_name (string): name of the command
+
+        Returns:
+            instance | None: Return the BaseClass instance or None
         """
-        if self.args.verbose:
-            print(message)
+        command_classes = [
+            cls for cls in BaseCommand.__subclasses__() if cls.name == command_name
+        ]
+        return command_classes[0]() if command_classes else None
+
+    def create_subparser(self, subparsers, command_name):
+        module = importlib.import_module(
+            f".commands.{command_name}", package="django_breeze.core.management"
+        )
+
+        for _, command_class in inspect.getmembers(module, inspect.isclass):
+            if (
+                issubclass(command_class, BaseCommand)
+                and command_class is not BaseCommand
+            ):
+                command_class().create_parser(subparsers)
+
+    def execute(self):
+        """Execute the utility command"""
+        parser = argparse.ArgumentParser(
+            description="Django Breeze Management Utility",
+            usage="django-breeze <command> [options]",
+        )
+        subparsers = parser.add_subparsers(title="Commands", dest="command")
+
+        for command_name in find_commands():
+            self.create_subparser(subparsers, command_name)
+
+        args = parser.parse_args(self.argv[1:])
+
+        if not args.command:
+            print(parser.print_help(), end="\n\n")
+            parser.exit()
+
+        command = self.get_command_instance(args.command)
+        command.handle(args)
 
 
-def execute_command(argv=None):
-    """Run a ManagementUtility."""
-    utility = Manager()
-    utility.execute()
+def execute_command():
+    manager = ManagementUtility()
+    manager.execute()
