@@ -8,43 +8,51 @@ Django Breeze provides a minimal and simple starting point for building a Django
 
 Inertia helps build single-page apps, without building an API. Create modern single-page React, Vue, and Svelte apps using classic server-side routing. Works with any backend. Documentation for Inertia can be found on the [Intertia website](https://inertiajs.com/).
 
-## Installation
+## Setup and Installation
 
-Install the following python package via pip
+Before installing the packages, ensure you are in your project's virtual environment.
+
+1. Install the django-breeze package.
 
 ```bash
 pip install django-breeze
 ```
 
-Add the following apps to your `INSTALLED_APPS` in `settings.py`
+2. Create a new django project if you haven't created one already.
+
+```bash
+django-breeze startproject myproject
+```
+
+Add the django_breeze to your `INSTALLED_APPS` in `settings.py`
 
 ```python
 INSTALLED_APPS = [
-  # installed apps,
+  #..............
   'django_breeze',
-  #...............
+  #..............
 ]
 ```
 
-## Generate Project Files
+### Generate Project Files
 
-Generate your frontend project files with django-breeze, use the `--typescript` option for usage with TypeScript.
+Generate your frontend project files with django-breeze, use `--typescript` option for usage with TypeScript.
 
 React
 
 ```bash
-django-breeze react
+django-breeze create-app react
 ```
 
 Vue 3
 
 ```bash
-django-breeze vue3
+django-breeze create-app vue3
 ```
 
 After generating your frontend project files, you should see `src` directory with other relevant files in the root of your django project.
 
-## Install node packages
+### Install the frontend packages
 
 Run this command to install packages for the frontend.
 
@@ -56,7 +64,7 @@ npm install
 yarn
 ```
 
-## Start Servers
+### Start the Servers
 
 Run the following commands to start your development servers.
 
