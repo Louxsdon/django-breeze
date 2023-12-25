@@ -11,8 +11,8 @@ packages = [{include = "django_breeze"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-django-vite = "^2.0.2"
-inertia-django = "^0.5.2"
+django-vite = "3.0.1"
+inertia-django = "0.5.3"
 
 
 [tool.poetry.group.dev.dependencies]
