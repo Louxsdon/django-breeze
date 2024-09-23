@@ -1,5 +1,4 @@
-from pathlib import Path, PurePath
-import os
+from pathlib import Path
 from django_breeze.core.management import BaseCommand
 from django_breeze.core.handlers.files import TemplateFilesHandler
 
@@ -10,12 +9,12 @@ TEMPLATE_DIR = BASE_DIR / "templates"
 class CreateAppCommand(BaseCommand):
     name = "create-app"
     description = "Create a new app"
-    usage = "create-app [ react|vue3 ] [ --typescript ]"
+    usage = "create-app [ react|vue3|svelte4 ] [ --typescript ]"
 
     def add_arguments(self, parser):
         parser.add_argument(
             "framework",
-            choices=["react", "vue3"],
+            choices=["react", "vue3", "svelte4"],
             help="Framework of the app to create",
         )
         parser.add_argument("--typescript", action="store_true", help="use TypeScript")
