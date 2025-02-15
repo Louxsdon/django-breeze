@@ -11,12 +11,12 @@ packages = [{ include = "django_breeze" }]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-django-vite = "3.0.5"
-inertia-django = "0.6.0"
+django-vite = "^3.0.6"
+inertia-django = "^1.1.0"
 
 
 [tool.poetry.group.dev.dependencies]
-mypy = "^1.2.0"
+mypy = "^1.15.0"
 
 [tool.poetry.scripts]
 django-breeze = 'django_breeze.scripts.django_breeze:run'
