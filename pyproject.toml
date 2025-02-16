@@ -17,6 +17,7 @@ inertia-django = "^1.1.0"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.15.0"
+copier = "^9.4.1"
 
 [tool.poetry.scripts]
 django-breeze = 'django_breeze.scripts.django_breeze:run'

@@ -1,0 +1,17 @@
+vite_configs:
+  when: false
+  default:
+    react:
+      imports: 'import react from "@vitejs/plugin-react";'
+      plugins: '[react({include: "**/*.disabled"})]'
+      extensions: '[".js", ".jsx", ".json"]'
+
+    vue:
+      imports: 'import vue from "@vitejs/plugin-vue";'
+      plugins: "[vue()]"
+      extensions: '[".js", ".vue", ".json"]'
+
+    svelte:
+      imports: 'import { svelte } from "@sveltejs/vite-plugin-svelte";'
+      plugins: "[svelte()]"
+      extensions: '[".js", ".svelte", ".json"]'

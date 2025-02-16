@@ -1,0 +1,62 @@
+# questions
+project_name:
+  type: str
+  help: What is your project name?
+  validator: "{% if not project_name %}Project name is required{% endif %}"
+  default: "Django Breeze Project"
+
+project_slug:
+  type: str
+  help: Project Slug
+  default: "{{ project_name.lower()|replace(' ', '_')|replace('-', '_')|replace('.', '_')|trim() }}"
+  validator: "{% if not project_slug %}Module name is required{% endif %}"
+
+project_type:
+  help: "How do you want to setup this project"
+  choices:
+    React: "react"
+    Vue-3: "vue"
+    Svelte-4: "svelte"
+
+project_option:
+  choices: ["javascript", "typescript"]
+  when: "{% if project_type != api %}true{% endif %}"
+
+frontend_path:
+  help: "Where do you want to place your frontend code"
+  default: "src"
+---
+!include ./configs.yml
+---
+# Copier will load all these files
+!include .configs.yml
+# These 3 lines split the several YAML documents
+---
+# vite_config: "{{ vite_configs[project_type] }}"
+---
+_templates_suffix: .stub
+
+_message_before_copy: |
+
+  =================================================
+  ============ WELCOME TO DJANGO BREEZE ===========
+  =================================================
+
+  You'll be asked a series of questions whose answers
+  will be used to configure your project.
+
+  -------------------------------------------------
+_message_after_copy: |
+  Your Django + Vite + Inertia project "{{ project_name }}" has been created successfully!
+
+  To start the development server, navigate to your project and run:
+
+  {% if docker_dev %}
+  $ docker compose up --watch
+  {% else %}
+  Install npm dependencies:
+  $ npm install
+  In separate terminals, run:
+  $ npm run dev
+  $ uv run python manage.py runserver 0.0.0.0:8000
+  {% endif %}

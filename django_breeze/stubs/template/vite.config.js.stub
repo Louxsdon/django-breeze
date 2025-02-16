@@ -1,0 +1,43 @@
+import { defineConfig } from "vite";
+import { resolve } from "path";
+
+
+{{vite_configs[project_type].imports}}
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [
+    {{vite_configs[project_type].plugins}},
+  ],
+  root: resolve("./{{frontend_path}}"),
+  base: "/static/",
+  server: {
+    host: "localhost",
+    port: 5173,
+    open: false,
+    watch: {
+      usePolling: true,
+      disableGlobbing: false,
+    },
+  },
+  resolve: {
+    resolve: {
+      extensions: {{vite_configs[project_type].extensions}},
+    },
+  },
+  build: {
+    outDir: resolve("./static/dist"),
+    assetsDir: "",
+    manifest: true,
+    emptyOutDir: true,
+    target: "es2015",
+    rollupOptions: {
+      input: {
+        main: resolve("./{{frontend_path}}/main.jsx"),
+      },
+      output: {
+        chunkFileNames: undefined,
+      },
+    },
+  },
+});

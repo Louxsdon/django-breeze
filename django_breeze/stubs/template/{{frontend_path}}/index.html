@@ -1,0 +1,19 @@
+{% load django_vite %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <head>
+      <meta charset="UTF-8" />
+      <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    {% vite_hmr_client %} {% vite_asset 'main.jsx' %}
+
+    <title>Django Breeze</title>
+  </head>
+
+  <body>
+    {% block inertia %}{% endblock %}
+  </body>
+</html>
