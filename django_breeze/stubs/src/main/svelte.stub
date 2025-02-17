@@ -1,0 +1,14 @@
+import { createInertiaApp } from "@inertiajs/svelte";
+import "./index.css";
+
+createInertiaApp({
+  resolve: (name) => {
+    const pages = import.meta.glob("./pages/**/*.{{configs[fmwk].ext}}", {
+      eager: true,
+    });
+    return pages[`./pages/${name}.{{configs[fmwk].ext}}`];
+  },
+  setup({ el, App, props }) {
+    new App({ target: el, props });
+  },
+});
