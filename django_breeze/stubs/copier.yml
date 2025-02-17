@@ -1,4 +1,3 @@
-# questions
 project_name:
   type: str
   help: What is your project name?
@@ -7,11 +6,12 @@ project_name:
 
 project_slug:
   type: str
+  when: false
   help: Project Slug
   default: "{{ project_name.lower()|replace(' ', '_')|replace('-', '_')|replace('.', '_')|trim() }}"
   validator: "{% if not project_slug %}Module name is required{% endif %}"
 
-project_type:
+fmwk:
   help: "How do you want to setup this project"
   choices:
     React: "react"
@@ -19,23 +19,29 @@ project_type:
     Svelte-4: "svelte"
 
 project_option:
-  choices: ["javascript", "typescript"]
-  when: "{% if project_type != api %}true{% endif %}"
+  type: str
+  help: "Choose your frontend framework option"
+  choices: ["typescript", "javascript"]
+  when: "{% if fmwk != api %}true{% endif %}"
+
+is_typescript:
+  when: false
+  type: bool
+  default: "{% if project_option == 'typescript' %}true{%else%}false{% endif %}"
 
 frontend_path:
   help: "Where do you want to place your frontend code"
   default: "src"
+  placeholder: "src"
+
 ---
 !include ./configs.yml
 ---
-# Copier will load all these files
-!include .configs.yml
-# These 3 lines split the several YAML documents
+framework:
+  when: false
+  type: yaml
+  default: "{{ configs[fmwk] }}"
 ---
-# vite_config: "{{ vite_configs[project_type] }}"
----
-_templates_suffix: .stub
-
 _message_before_copy: |
 
   =================================================
@@ -47,16 +53,18 @@ _message_before_copy: |
 
   -------------------------------------------------
 _message_after_copy: |
-  Your Django + Vite + Inertia project "{{ project_name }}" has been created successfully!
+  Your Django Breeze project "{{ project_name }}" has been setup successfully!
 
-  To start the development server, navigate to your project and run:
+  Install pip and npm dependencies and start the development server:
 
-  {% if docker_dev %}
-  $ docker compose up --watch
-  {% else %}
   Install npm dependencies:
   $ npm install
-  In separate terminals, run:
+
+  Start the development server:
   $ npm run dev
-  $ uv run python manage.py runserver 0.0.0.0:8000
-  {% endif %}
+
+  Start the Django server:
+  $ python manage.py runserver
+
+_templates_suffix: .stub
+_subdirectory: template

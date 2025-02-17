@@ -1,17 +1,31 @@
-vite_configs:
+main_ext:
   when: false
+  type: "str"
+  default: "{% if is_typescript == True %}ts{% else %}js{% endif %}"
+
+react_ext:
+  when: false
+  type: "str"
+  default: "{% if is_typescript == True %}tsx{% else %}jsx{% endif %}"
+
+configs:
+  when: false
+  type: "yaml"
   default:
     react:
       imports: 'import react from "@vitejs/plugin-react";'
       plugins: '[react({include: "**/*.disabled"})]'
       extensions: '[".js", ".jsx", ".json"]'
+      ext: "tsx"
 
     vue:
       imports: 'import vue from "@vitejs/plugin-vue";'
       plugins: "[vue()]"
       extensions: '[".js", ".vue", ".json"]'
+      ext: "vue"
 
     svelte:
-      imports: 'import { svelte } from "@sveltejs/vite-plugin-svelte";'
-      plugins: "[svelte()]"
+      imports: 'import { svelte, vitePreprocess } from "@sveltejs/vite-plugin-svelte";'
+      plugins: "[svelte({ preprocess: vitePreprocess() })]"
       extensions: '[".js", ".svelte", ".json"]'
+      ext: "svelte"
