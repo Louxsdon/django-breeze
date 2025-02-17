@@ -1,4 +1,4 @@
-{% load django_vite %}
+{% raw %}{% load django_vite %}{% endraw %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -8,12 +8,13 @@
       <link rel="icon" type="image/svg+xml" href="/vite.svg" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    {% vite_hmr_client %} {% vite_asset 'main.jsx' %}
+    {% raw %}{% vite_hmr_client %}{% endraw %} 
+    {% raw -%}{% vite_asset {% endraw %} 'main.{{main_ext}}' {% raw -%}%}{% endraw %}
 
     <title>Django Breeze</title>
   </head>
 
   <body>
-    {% block inertia %}{% endblock %}
+    {% raw %}{% block inertia %}{% endblock %}{% endraw %}
   </body>
 </html>

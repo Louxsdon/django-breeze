@@ -2,12 +2,12 @@ import { defineConfig } from "vite";
 import { resolve } from "path";
 
 
-{{vite_configs[project_type].imports}}
+{{framework.imports}}
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    {{vite_configs[project_type].plugins}},
+    {{framework.plugins}},
   ],
   root: resolve("./{{frontend_path}}"),
   base: "/static/",
@@ -22,7 +22,7 @@ export default defineConfig({
   },
   resolve: {
     resolve: {
-      extensions: {{vite_configs[project_type].extensions}},
+      extensions: {{framework.extensions}},
     },
   },
   build: {
@@ -33,7 +33,7 @@ export default defineConfig({
     target: "es2015",
     rollupOptions: {
       input: {
-        main: resolve("./{{frontend_path}}/main.jsx"),
+        main: resolve("./{{frontend_path}}/main.{{main_ext}}"),
       },
       output: {
         chunkFileNames: undefined,

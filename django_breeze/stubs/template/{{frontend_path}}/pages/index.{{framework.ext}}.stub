@@ -1,0 +1,2 @@
+
+{% include pathjoin('src/pages', fmwk)+'.stub' %}
