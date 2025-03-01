@@ -42,12 +42,26 @@ React
 
 ```bash
 django-breeze create-app react
+
+```
+
+React With TypeScript
+
+```bash
+django-breeze create-app react --typescript
+
 ```
 
 Vue 3
 
 ```bash
 django-breeze create-app vue3
+```
+
+Vue 3 With  TypeScript
+
+```bash
+django-breeze create-app vue3 --typrscript
 ```
 
 After generating your frontend project files, you should see `src` directory with other relevant files in the root of your django project.
