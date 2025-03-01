@@ -61,7 +61,7 @@ django-breeze create-app vue3
 Vue 3 With  TypeScript
 
 ```bash
-django-breeze create-app vue3 --typrscript
+django-breeze create-app vue3 --typescript
 ```
 
 After generating your frontend project files, you should see `src` directory with other relevant files in the root of your django project.
